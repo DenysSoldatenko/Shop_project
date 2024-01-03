@@ -1,20 +1,26 @@
 from django.shortcuts import render
 
-
-def index(request):
+def homepage(request):
     context = {
-        'title': 'Home - Main Page',
-        'content': "Furniture Store HOME",
+        'title': 'Home',
+        'content': "Welcome to Luxe Living!",
     }
 
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/homepage.html', context)
 
-
-def about(request):
+def about_us(request):
     context = {
-        'title': 'Home - About Us',
-        'content': "About Us",
-        'text_on_page': "Text about why this store is awesome and how great our products are.",
+        'title': 'About Us',
+        'content': "About Us - Luxe Living Furniture",
+        'text_on_page': """
+            At Luxe Living, we believe that your home is more than just a place — it's a sanctuary where unforgettable moments are created.
+
+            Our mission is simple: L.U.X.E. — Living Unmatched eXperiences Everywhere. 
+
+            Whether you're hosting friends, enjoying a family movie night, or simply relaxing with a book, we offer high-quality, stylish, and affordable furniture to make your space truly your own.
+
+            Passionate about design and functionality, Luxe Living is your go-to destination for bringing comfort, sophistication, and innovation into your home. Browse our curated collections and see why our customers trust us to make their homes a reflection of their style and personality!
+        """,
     }
 
-    return render(request, 'main/about.html', context)
+    return render(request, 'main/about_us.html', context)
