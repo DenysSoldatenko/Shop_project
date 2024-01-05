@@ -112,11 +112,7 @@
         </div>
     </section>
 
-    <footer class="py-4 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Luxe Studio 2023 - 2024. We’re just getting started!</p>
-        </div>
-    </footer>
+    {% block footer %}{% endblock %}
 
     <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
     <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>
