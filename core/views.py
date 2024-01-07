@@ -6,7 +6,7 @@ def homepage(request):
         'content': "Welcome to Luxe Living!",
     }
 
-    return render(request, 'main/homepage.html', context)
+    return render(request, 'core/homepage.html', context)
 
 def about_us(request):
     context = {
@@ -23,4 +23,4 @@ def about_us(request):
         """,
     }
 
-    return render(request, 'main/about_us.html', context)
+    return render(request, 'core/about_us.html', context)
