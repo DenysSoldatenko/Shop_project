@@ -1,9 +1,13 @@
 from django.shortcuts import render
 
+from inventory.models import Category
+
+
 def homepage(request):
     context = {
         'title': 'Home',
         'content': "Welcome to Luxe Living!",
+        'categories': Category.objects.all(),
     }
 
     return render(request, 'core/homepage.html', context)
