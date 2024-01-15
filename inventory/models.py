@@ -38,10 +38,10 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("catalog:product", kwargs={"product_slug": self.slug})
 
-    def display_id(self):
+    def get_formatted_id(self):
         return f"{self.id:05}"
 
-    def sell_price(self):
+    def get_sale_price(self):
         if self.discount:
             return round(self.price - self.price * self.discount / 100, 2)
         return self.price
