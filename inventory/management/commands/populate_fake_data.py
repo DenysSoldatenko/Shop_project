@@ -5,6 +5,8 @@ from django.core.management import BaseCommand
 from django.db import IntegrityError
 from faker import Faker
 from inventory.models import Category, Product
+from PIL import Image
+from io import BytesIO
 
 class Command(BaseCommand):
     help = "Generate fake data for Category and Product models"
@@ -47,7 +49,20 @@ class Command(BaseCommand):
                     if not image_name.lower().endswith(('jpg', 'jpeg', 'png', 'gif', 'bmp')):
                         image_name += '.jpg'
 
-                    image_content = ContentFile(response.content, name=image_name)
+                    image = Image.open(BytesIO(response.content))
+
+                    # Convert palette-based (P) images to RGB before saving as JPEG
+                    if image.mode != 'RGB':
+                        image = image.convert('RGB')
+
+                    # Resize the image to a fixed size (e.g., 300x300)
+                    image = image.resize((300, 300))
+
+                    image_io = BytesIO()
+                    image.save(image_io, format='JPEG')
+                    image_io.seek(0)
+
+                    image_content = ContentFile(image_io.read(), name=image_name)
 
                     product = Product.objects.create(
                         name=product_name,
@@ -70,4 +85,8 @@ class Command(BaseCommand):
 
             except requests.RequestException as e:
                 self.stdout.write(self.style.WARNING(f'Failed to download image for product "{product_name}". Error: {e}'))
+                continue
+
+            except Exception as e:
+                self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
                 continue
