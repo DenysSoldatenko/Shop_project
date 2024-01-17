@@ -57,10 +57,13 @@
                     <p class="card-text text-truncate">{{ product.description }}</p>
                     <p class="product_id">id: {{ product.get_formatted_id }}</p>
                     <div class="d-flex justify-content-between">
-                        {% comment %} <p><s>100</s> $</p>
-                        <p><strong>90.00 $</strong></p>
-                        <span class="badge bg-warning text-dark">Discount 10.00 %</span> {% endcomment %}
-                        <p><strong>{{ product.price }} $</strong></p>
+                        {% if product.discount %}
+                            <p><s>{{product.price}}</s> $</p>
+                            <p><strong>{{ product.get_sale_price }} $</strong></p>
+                            <span class="badge bg-warning text-dark">Discount {{ product.discount }} %</span>
+                        {% else %}
+                            <p><strong>{{ product.price }} $</strong></p>
+                        {% endif %}
                         <a href="#" class="btn add-to-cart">
                             <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
                                 width="32" height="32">
