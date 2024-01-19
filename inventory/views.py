@@ -3,13 +3,15 @@ from django.shortcuts import render
 from inventory.models import Product
 
 
-def catalog(request):
+def product_list(request):
     context = {
-        "title": "Home - Catalog",
-        "goods": Product.objects.all(),
+        "title": "Product Catalog",
+        "products": Product.objects.all(),
     }
-    return render(request, "inventory/catalog.html", context)
+    return render(request, "inventory/product_list.html", context)
 
 
-def product(request):
-    return render(request, "inventory/product.html")
+def product_detail(request, product_slug):
+    product = Product.objects.get(slug=product_slug)
+    context = {"product": product}
+    return render(request, "inventory/product_detail.html", context)

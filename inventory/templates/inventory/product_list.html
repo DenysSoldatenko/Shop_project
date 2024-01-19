@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <!-- Filters Form -->
+        <div class="dropdown mb-2">
+            <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Filters
+            </button>
+
+            <form action="" method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
+                <div class="form-check text-white mx-3">
+                    <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on">
+                    <input type="hidden" name="q" value="request.GET.q">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        On Sale
+                    </label>
+                </div>
+                <p class="text-white mx-3 mt-3">Sort By:</p>
+                <div class="form-check text-white mx-3">
+                    <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault1" value="default"
+                           checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Default
+                    </label>
+                </div>
+                <div class="form-check text-white mx-3">
+                    <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault2" value="price">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Price Low to High
+                    </label>
+                </div>
+                <div class="form-check text-white mx-3">
+                    <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault3" value="-price">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Price High to Low
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary mx-3 mt-3">Apply</button>
+            </form>
+        </div>
+
+        <!-- Product Cards -->
+        {% for product in products %}
+            <div class="col-lg-4 col-md-6 p-4">
+                <div class="card border-primary rounded custom-shadow">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" width="300"
+                             height="300">
+                    {% else %}
+                        <img src="{% static 'deps/images/not_found_image.png' %}" class="card-img-top"
+                             alt="not_found_image" width="300" height="300">
+                    {% endif %}
+                    <div class="card-body">
+                        <a href="{% url 'catalog:product_detail' product_slug=product.slug %}">
+                            <p class="card-title">{{ product.name }}</p>
+                        </a>
+                        <p class="card-text text-truncate">{{ product.description }}</p>
+                        <p class="product_id">id: {{ product.get_formatted_id }}</p>
+                        <div class="d-flex justify-content-between">
+                            {% if product.discount %}
+                                <p><s>{{ product.price }}</s> $</p>
+                                <p><strong>{{ product.get_sale_price }} $</strong></p>
+                                <span class="badge bg-warning text-dark">Discount {{ product.discount }} %</span>
+                            {% else %}
+                                <p><strong>{{ product.price }} $</strong></p>
+                            {% endif %}
+                            <a href="#" class="btn add-to-cart">
+                                <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                                     width="32" height="32">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
