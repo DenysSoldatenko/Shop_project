@@ -20,103 +20,105 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-            <div class="container">
-                <a class="navbar-brand" href="{% url 'core:index' %}">Home</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+<header>
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'core:index' %}">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Information
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item text-white" href="#">Delivery and Payment</a></li>
-                                <li><a class="dropdown-item text-white" href="#">Contact Information</a></li>
-                                <li><a class="dropdown-item text-white" href="{% url 'core:about' %}">About Us</a></li>
-                            </ul>
-                        </li>
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link text-white" href="{% url 'user:users_cart' %}">Cart</a>#}
-{#                        </li>#}
-{#                        {% if not user.is_authenticated %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link text-white" href="{% url 'user:login' %}">Login</a>#}
-{#                            </li>#}
-{#                        {% else %}#}
-{#                            <li class="nav-item dropdown ">#}
-{#                                <a class="nav-link dropdown-toggle text-white" href="#" role="button"#}
-{#                                    data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                                    My Profile#}
-{#                                </a>#}
-{#                                <ul class="dropdown-menu">#}
-{#                                    <li><a class="dropdown-item text-white" href="carts/cart.html">Cart</a></li>#}
-{#                                    <li><a class="dropdown-item text-white" href="{% url 'user:profile' %}">Profile</a>#}
-{#                                    </li>#}
-{#                                    {% if user.is_admin or user.is_staff %}#}
-{#                                        <li><a class="dropdown-item text-white" href="{% url 'admin:index' %}">Admin Panel</a></li>#}
-{#                                    {% endif %}#}
-{#                                    <li>#}
-{#                                        <hr class="dropdown-divider">#}
-{#                                    </li>#}
-{#                                    <li><a class="dropdown-item text-white" href="{% url 'user:logout' %}">Logout</a></li>#}
-{#                                </ul>#}
-{#                            </li>#}
-{#                        {% endif %}#}
-                    </ul>
-{#                    <form class="d-flex" role="search" action="{% url 'catalog:search' %}" method="get">#}
-{#                        <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">#}
-{#                        <button class="btn btn-outline-success text-white" type="submit">Search</button>#}
-{#                    </form>#}
-                </div>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Information
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item text-white" href="#">Delivery and Payment</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Contact Information</a></li>
+                            <li><a class="dropdown-item text-white" href="{% url 'core:about' %}">About Us</a></li>
+                        </ul>
+                    </li>
+                    {#                        <li class="nav-item">#}
+                    {#                            <a class="nav-link text-white" href="{% url 'user:users_cart' %}">Cart</a>#}
+                    {#                        </li>#}
+                    {#                        {% if not user.is_authenticated %}#}
+                    {#                            <li class="nav-item">#}
+                    {#                                <a class="nav-link text-white" href="{% url 'user:login' %}">Login</a>#}
+                    {#                            </li>#}
+                    {#                        {% else %}#}
+                    {#                            <li class="nav-item dropdown ">#}
+                    {#                                <a class="nav-link dropdown-toggle text-white" href="#" role="button"#}
+                    {#                                    data-bs-toggle="dropdown" aria-expanded="false">#}
+                    {#                                    My Profile#}
+                    {#                                </a>#}
+                    {#                                <ul class="dropdown-menu">#}
+                    {#                                    <li><a class="dropdown-item text-white" href="carts/cart.html">Cart</a></li>#}
+                    {#                                    <li><a class="dropdown-item text-white" href="{% url 'user:profile' %}">Profile</a>#}
+                    {#                                    </li>#}
+                    {#                                    {% if user.is_admin or user.is_staff %}#}
+                    {#                                        <li><a class="dropdown-item text-white" href="{% url 'admin:index' %}">Admin Panel</a></li>#}
+                    {#                                    {% endif %}#}
+                    {#                                    <li>#}
+                    {#                                        <hr class="dropdown-divider">#}
+                    {#                                    </li>#}
+                    {#                                    <li><a class="dropdown-item text-white" href="{% url 'user:logout' %}">Logout</a></li>#}
+                    {#                                </ul>#}
+                    {#                            </li>#}
+                    {#                        {% endif %}#}
+                </ul>
+                {#                    <form class="d-flex" role="search" action="{% url 'catalog:search' %}" method="get">#}
+                {#                        <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">#}
+                {#                        <button class="btn btn-outline-success text-white" type="submit">Search</button>#}
+                {#                    </form>#}
             </div>
-        </nav>
-    </header>
-    <section>
-        <div class="container">
-            <div class="row mt-1 position-fixed z-3">
-                <div class="dropdown mb-2">
-                    <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
+        </div>
+    </nav>
+</header>
+<section>
+    <div class="container">
+        <div class="row mt-1 position-fixed z-3">
+            <div class="dropdown mb-2">
+                <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        Catalog
-                        <img class="mx-1" src="{% static 'deps/icons/grid-fill.svg' %}" alt="Catalog Icon" width="16"
-                            height="16">
-                    </button>
-                    <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
-{#                        {% cache 60 catalog_categories %}#}
-                        {% get_all_categories as categories %}
-                        {% for category in categories %}
-                            <li><a class="dropdown-item text-white" href="{% url 'catalog:index'  %}">{{category.name}}</a></li>
-                        {% endfor %}
-{#                        {% endcache %}#}
-                    </ul>
-                </div>
-                {% block modal_cart %}{% endblock %}
+                    Catalog
+                    <img class="mx-1" src="{% static 'deps/icons/grid-fill.svg' %}" alt="Catalog Icon" width="16"
+                         height="16">
+                </button>
+                <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
+                    {#                        {% cache 60 catalog_categories %}#}
+                    {% get_all_categories as categories %}
+                    {% for category in categories %}
+                        <li><a class="dropdown-item text-white"
+                               href="{% url 'catalog:product_list' category_slug=category.slug %}">{{ category.name }}</a>
+                        </li>
+                    {% endfor %}
+                    {#                        {% endcache %}#}
+                </ul>
+            </div>
+            {% block modal_cart %}{% endblock %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mt-1">
+            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-10">
+                {% include 'includes/notifications.html' %}
+                {% block content %}{% endblock %}
             </div>
         </div>
-        <div class="container">
-            <div class="row mt-1">
-                <div class="col-lg-2">
-                </div>
-                <div class="col-lg-10">
-                    {% include 'includes/notifications.html' %}
-                    {% block content %}{% endblock %}
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
 
-    {% block footer %}{% endblock %}
+{% block footer %}{% endblock %}
 
-    <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
-    <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>
-    <script src="{% static 'deps/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
+<script src="{% static 'deps/js/jquery-ajax.js' %}"></script>
+<script src="{% static 'deps/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
 </body>
 
 </html>
