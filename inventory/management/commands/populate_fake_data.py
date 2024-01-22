@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     f'Category name or slug "{category_name}" already exists. Skipping this category.'))
                 continue
 
-        for _ in range(25):
+        for _ in range(35):
             product_name = fake.word().capitalize()
             product_slug = fake.slug()
             product_description = fake.text()

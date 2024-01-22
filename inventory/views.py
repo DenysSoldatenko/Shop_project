@@ -4,14 +4,15 @@ from django.shortcuts import render, get_list_or_404
 from inventory.models import Product
 
 
-def product_list(request, category_slug, page=1):
+def product_list(request, category_slug):
+    page = request.GET.get('page', 1)
     if category_slug == "all":
         products = Product.objects.all()
     else:
         products = get_list_or_404((Product.objects.filter(category__slug=category_slug)))
 
-    paginator = Paginator(products, 3)
-    current_page = paginator.page(page)
+    paginator = Paginator(products, 6)
+    current_page = paginator.page(int(page))
 
     context = {
         "title": "Product Catalog",

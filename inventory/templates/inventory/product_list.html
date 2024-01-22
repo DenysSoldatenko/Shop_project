@@ -57,7 +57,7 @@
                         <a href="{% url 'catalog:product_detail' product_slug=product.slug %}">
                             <p class="card-title">{{ product.name }}</p>
                         </a>
-                        <p class="card-text text-truncate">{{ product.description }}</p>
+                        <p class="card-text text-truncate|truncatechars:25">{{ product.description }}</p>
                         <p class="product_id">id: {{ product.get_formatted_id }}</p>
                         <div class="d-flex justify-content-between">
                             {% if product.discount %}
@@ -84,23 +84,19 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center my-4">
                 <div class="custom-shadow d-flex">
-
                     <li class="page-item {% if not products.has_previous %}disabled{% endif %}">
-                        <a class="page-link" href="{% if products.has_previous %}
-                          {% url "catalog:index" slug_url products.previous_page_number %}
-                          {% else %}#{% endif %}">Previous</a>
+                        <a class="page-link" href="{% if products.has_previous %}?page={{ products.previous_page_number }}{% else %}#{% endif %}">Previous</a>
                     </li>
                     {% for page in products.paginator.page_range %}
                         {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
                             <li class="page-item {% if products.number == page %} active {% endif %}">
-                                <a class="page-link" href="{% url "catalog:index" slug_url page %}">{{ page }}</a>
+                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}
                     <li class="page-item {% if not products.has_next %}disabled{% endif %}">
-                        <a class="page-link" href="{% if products.has_next %}
-                        {% url "catalog:index" slug_url products.next_page_number %}
-                        {% else %}#{% endif %}">Next</a>
+                        <a class="page-link"
+                           href="{% if products.has_next %}?page={{ products.next_page_number }}{% else %}#{% endif %}">Next</a>
                     </li>
                 </div>
             </ul>
