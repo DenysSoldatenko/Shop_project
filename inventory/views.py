@@ -1,18 +1,21 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import render
 
 from inventory.models import Product
 
-
 def product_list(request, category_slug):
     page = request.GET.get('page', 1)
-    if category_slug == "all":
-        products = Product.objects.all()
-    else:
-        products = get_list_or_404((Product.objects.filter(category__slug=category_slug)))
+    on_sale = request.GET.get('on_sale', False)
+    order_by = request.GET.get('order_by', 'default')
 
-    paginator = Paginator(products, 6)
-    current_page = paginator.page(int(page))
+    products = Product.objects.filter(category__slug=category_slug) if category_slug != 'all' else Product.objects.all()
+    if on_sale:
+        products = products.filter(discount__gt=0)
+    if order_by != 'default':
+        products = products.order_by(order_by)
+
+    paginator = Paginator(products, 9)
+    current_page = paginator.get_page(page)
 
     context = {
         "title": "Product Catalog",
