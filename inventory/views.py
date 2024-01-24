@@ -5,7 +5,7 @@ from inventory.models import Product
 
 def product_list(request, category_slug):
     page = request.GET.get('page', 1)
-    on_sale = request.GET.get('on_sale', False)
+    on_sale = request.GET.get('on_sale', None)
     order_by = request.GET.get('order_by', 'default')
 
     products = Product.objects.filter(category__slug=category_slug) if category_slug != 'all' else Product.objects.all()

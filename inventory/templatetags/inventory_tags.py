@@ -13,10 +13,9 @@ def get_all_categories():
 @register.simple_tag(takes_context=True)
 def update_query_params(context, **kwargs):
     query = context['request'].GET.dict()
-    # Optional: You can log or debug context variables here
-    # print(context['title'])
-    # print(context['slug_url'])
-    # print(context['goods'])
-    # print([product.name for product in context['goods']])
+    print("\n=== DEBUGGING update_query_params ===")
+    print(f"Current request URL: {context['request'].build_absolute_uri()}")
+    print("Existing query parameters:", query)
     query.update(kwargs)
+    print("Updated query parameters:", query)
     return urlencode(query)
