@@ -16,7 +16,7 @@
                 <div class="form-check text-white mx-3">
                     <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on"
                            {% if request.GET.on_sale == 'on' %}checked{% endif %}>
-                    {% if request.GET.query %} <input type="hidden" name="query" value="request.GET.query">{% endif %}
+                    {% if request.GET.query %} <input type="hidden" name="query" value={{ request.GET.query }}>{% endif %}
                     <label class="form-check-label" for="flexCheckDefault">
                         On Sale
                     </label>
