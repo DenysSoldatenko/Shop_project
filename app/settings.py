@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "debug_toolbar",
 
     'core',
-    'inventory'
+    'inventory',
+    'user',
 ]
 
 MIDDLEWARE = [
