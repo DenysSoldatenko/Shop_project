@@ -7,7 +7,7 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=10, blank=True, null=True, verbose_name='Phone Number')
 
     class Meta:
-        db_table = 'user'
+        db_table = 'users'
         verbose_name = 'User'
         verbose_name_plural = 'Users'
 
