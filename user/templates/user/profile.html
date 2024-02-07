@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load cache %}
-{#{% load carts_tags %}#}
+{% load cart_tags %}
 
 {% block content %}
     <div class="row">
@@ -81,16 +81,15 @@
                     </div>
                 </div>
                 <!-- Cart Section -->
-{#                {% user_carts request as carts %}#}
-{##}
-{#                <div class="col-md-7">#}
-{#                    <div class="bg-white p-4 mb-4 mx-2 rounded custom-shadow">#}
-{#                        <h3 class="text-center mb-4">Shopping Cart</h3>#}
-{#                        <div class="container" id="cart-items-container">#}
-{#                            {% include "carts/includes/included_cart.html" %}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
+                {% get_user_cart request as cart %}
+                <div class="col-md-7">
+                    <div class="bg-white p-4 mb-4 mx-2 rounded custom-shadow">
+                        <h3 class="text-center mb-4">Shopping Cart</h3>
+                        <div class="container" id="cart-items-container">
+                            {% include "cart/cart_details.html" %}
+                        </div>
+                    </div>
+                </div>
                 <!-- Orders Section -->
                 {% comment %} {% cache 60 user_orders user.id %} {% endcomment %}
                 <div class="col-md-12">

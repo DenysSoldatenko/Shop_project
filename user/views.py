@@ -72,6 +72,17 @@ def profile(request):
     return render(request, 'user/profile.html', context)
 
 
+def cart(request):
+    form = ProfileForm(instance=request.user)
+
+    context = {
+        'title': 'Cart',
+        'form': form
+    }
+
+    return render(request, 'user/cart.html', context)
+
+
 @login_required
 def logout(request):
     auth.logout(request)
