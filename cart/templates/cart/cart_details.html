@@ -13,27 +13,27 @@
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-dark btn-sm decrement"
                                         data-cart-id="{{ cart.id }}"
-                                        data-cart-change-url="{% url "cart:cart_change" %}">
+                                        data-cart-change-url="{% url "cart:update_cart_item" cart.product.slug %}">
                                     {% csrf_token %}
                                     -</button>
                             </span>
                             <input type="text" class="form-control number" value="{{ cart.quantity }}"
                                    readonly>
                             <span class="input-group-btn">
+                               {% csrf_token %}
                                 <button type="button" class="btn btn-dark btn-sm increment"
                                         data-cart-id="{{ cart.id }}"
-                                        data-cart-change-url="{% url "cart:cart_change" %}">
-                                    {% csrf_token %}
+                                        data-cart-change-url="{% url "cart:update_cart_item" cart.product.slug %}">
                                     +</button>
                             </span>
                         </div>
                     </div>
                     <div class="col p-0">
-                        <p>x {{ cart.product.sell_price }} = </p>
+                        <p>x {{ cart.product.get_sale_price }} = </p>
                     </div>
-                    <div class="col p-0"><strong> {{ cart.products_price }} $</strong></div>
+                    <div class="col p-0"><strong> {{ cart.get_product_price }} $</strong></div>
                     <div class="col p-0">
-                        <a href="{% url "cart:cart_remove" %}" class="remove-from-cart"
+                        <a href="{% url "cart:remove_from_cart" cart.product.slug %}" class="remove-from-cart"
                            data-cart-id="{{ cart.id }}">
                             {% csrf_token %}
                             <img class="mx-1" src="{% static "deps/icons/trash3-fill.svg" %}"
@@ -51,8 +51,8 @@
         <h4 class="float-left"><strong>{{ carts.total_price }} $</strong></h4>
     </div>
 </div>
-{% if cart and not order %}
-    <a class="btn btn-dark" href="{% url "orders:create_order" %}">
-        Place Order
-    </a>
-{% endif %}
+{#{% if cart and not order %}#}
+{#    <a class="btn btn-dark" href="{% url "orders:create_order" %}">#}
+{#        Place Order#}
+{#    </a>#}
+{#{% endif %}#}
