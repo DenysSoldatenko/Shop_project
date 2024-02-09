@@ -1,9 +1,9 @@
 {% load static %}
 
 <div class="card mb-3 text-bg-light shadow-lg">
-    {% for cart in cart %}
+    {% for cart_item in cart %}
         <div class="card-header">
-            <h5 class="card-title">{{ cart.product.name }}</h5>
+            <h5 class="card-title">{{ cart_item.product.name }}</h5>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -11,30 +11,30 @@
                     <div class="col p-0">
                         <div class="input-group">
                             <span class="input-group-btn">
+                                {% csrf_token %}
                                 <button type="button" class="btn btn-dark btn-sm decrement"
                                         data-cart-id="{{ cart.id }}"
-                                        data-cart-change-url="{% url "cart:update_cart_item" cart.product.slug %}">
-                                    {% csrf_token %}
+                                        data-cart-change-url="{% url "cart:update_cart_item" cart_item.product.slug %}">
                                     -</button>
                             </span>
-                            <input type="text" class="form-control number" value="{{ cart.quantity }}"
+                            <input type="text" class="form-control number" value="{{ cart_item.quantity }}"
                                    readonly>
                             <span class="input-group-btn">
                                {% csrf_token %}
                                 <button type="button" class="btn btn-dark btn-sm increment"
                                         data-cart-id="{{ cart.id }}"
-                                        data-cart-change-url="{% url "cart:update_cart_item" cart.product.slug %}">
+                                        data-cart-change-url="{% url "cart:update_cart_item" cart_item.product.slug %}">
                                     +</button>
                             </span>
                         </div>
                     </div>
                     <div class="col p-0">
-                        <p>x {{ cart.product.get_sale_price }} = </p>
+                        <p>x {{ cart_item.product.get_sale_price }} = </p>
                     </div>
-                    <div class="col p-0"><strong> {{ cart.get_product_price }} $</strong></div>
+                    <div class="col p-0"><strong> {{ cart_item.get_product_price }} $</strong></div>
                     <div class="col p-0">
-                        <a href="{% url "cart:remove_from_cart" cart.product.slug %}" class="remove-from-cart"
-                           data-cart-id="{{ cart.id }}">
+                        <a href="{% url "cart:remove_from_cart" product_slug=cart_item.product.slug %}" class="remove-from-cart"
+                           data-cart-id="{{ cart_item.id }}">
                             {% csrf_token %}
                             <img class="mx-1" src="{% static "deps/icons/trash3-fill.svg" %}"
                                  alt="Catalog Icon" width="16" height="16">
@@ -47,8 +47,8 @@
 </div>
 <div class="card mb-3 shadow-lg">
     <div class="card-footer">
-        <p class="float-left">Total <strong>{{ carts.total_quantity }}</strong> item(s) worth</p>
-        <h4 class="float-left"><strong>{{ carts.total_price }} $</strong></h4>
+        <p class="float-left">Total <strong>{{ cart.total_quantity }}</strong> item(s) worth</p>
+        <h4 class="float-left"><strong>{{ cart.total_price }} $</strong></h4>
     </div>
 </div>
 {#{% if cart and not order %}#}

@@ -32,7 +32,7 @@ $(document).ready(function () {
             },
 
             error: function (data) {
-                console.log("Ошибка при добавлении товара в корзину");
+                console.log("Error adding the product to the cart");
             },
         });
     });
@@ -68,7 +68,7 @@ $(document).ready(function () {
             },
 
             error: function (data) {
-                console.log("Ошибка при добавлении товара в корзину");
+                console.log("Error adding the product to the cart");
             },
         });
     });
@@ -120,7 +120,7 @@ $(document).ready(function () {
                 cartItemsContainer.html(data.cart_items_html);
             },
             error: function (data) {
-                console.log("Ошибка при добавлении товара в корзину");
+                console.log("Error adding the product to the cart");
             },
         });
     }
