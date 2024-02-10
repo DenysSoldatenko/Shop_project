@@ -14,7 +14,7 @@
                                 {% csrf_token %}
                                 <button type="button" class="btn btn-dark btn-sm decrement"
                                         data-cart-id="{{ cart.id }}"
-                                        data-cart-change-url="{% url "cart:update_cart_item" cart_item.product.slug %}">
+                                        data-cart-change-url="{% url "cart:update_cart_item" %}">
                                     -</button>
                             </span>
                             <input type="text" class="form-control number" value="{{ cart_item.quantity }}"
@@ -23,7 +23,7 @@
                                {% csrf_token %}
                                 <button type="button" class="btn btn-dark btn-sm increment"
                                         data-cart-id="{{ cart.id }}"
-                                        data-cart-change-url="{% url "cart:update_cart_item" cart_item.product.slug %}">
+                                        data-cart-change-url="{% url "cart:update_cart_item" %}">
                                     +</button>
                             </span>
                         </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col p-0"><strong> {{ cart_item.get_product_price }} $</strong></div>
                     <div class="col p-0">
-                        <a href="{% url "cart:remove_from_cart" product_slug=cart_item.product.slug %}" class="remove-from-cart"
+                        <a href="{% url "cart:remove_from_cart" %}" class="remove-from-cart"
                            data-cart-id="{{ cart_item.id }}">
                             {% csrf_token %}
                             <img class="mx-1" src="{% static "deps/icons/trash3-fill.svg" %}"
