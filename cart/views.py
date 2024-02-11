@@ -24,7 +24,7 @@ def cart_add(request):
     user_cart = get_user_cart_detail(request)
     cart_items_html = render_to_string("cart/cart_details.html", {"cart": user_cart}, request=request)
     response_data = {
-        "message": "Item added to cart",
+        "message": "Item was added to the cart",
         "cart_items_html": cart_items_html,
     }
     return JsonResponse(response_data)
@@ -35,8 +35,15 @@ def cart_change(request):
 
 
 def cart_remove(request):
-    product_id = request.POST.get("product_id")
-    product = Product.objects.get(id=product_id)
-    cart = Cart.objects.get(product=product)
+    cart_id = request.POST.get("cart_id")
+    cart = Cart.objects.get(id=cart_id)
+    quantity = cart.quantity
     cart.delete()
-    return redirect(request.META['HTTP_REFERER'])
+    user_cart = get_user_cart_detail(request)
+    cart_items_html = render_to_string("cart/cart_details.html", {"cart": user_cart}, request=request)
+    response_data = {
+        "message": "Item was removed from the cart",
+        "cart_items_html": cart_items_html,
+        "quantity_deleted": quantity,
+    }
+    return JsonResponse(response_data)
