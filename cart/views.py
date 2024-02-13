@@ -22,6 +22,17 @@ def cart_add(request):
         else:
             Cart.objects.create(user=request.user, product=product, quantity=1)
             message = f"The item {product.name} has been added to your cart."
+    else:
+        carts = Cart.objects.filter(session_key=request.session.session_key, product=product)
+        if carts.exists():
+            cart = carts.first()
+            if cart:
+                cart.quantity += 1
+                cart.save()
+                message = f"The quantity of {product.name} has been increased to {cart.quantity}."
+        else:
+            Cart.objects.create(session_key=request.session.session_key, product=product, quantity=1)
+            message = f"The item {product.name} has been added to your cart."
 
     user_cart = get_user_cart_detail(request)
     cart_items_html = render_to_string("cart/cart_details.html", {"cart": user_cart}, request=request)
