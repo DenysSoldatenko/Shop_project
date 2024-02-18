@@ -36,7 +36,7 @@ class Product(models.Model):
         return f'{self.name} Quantity - {self.quantity}'
 
     def get_absolute_url(self):
-        return reverse("catalog:product", kwargs={"product_slug": self.slug})
+        return reverse("inventory:product_detail", kwargs={"product_slug": self.slug})
 
     def get_formatted_id(self):
         return f"{self.id:05}"
