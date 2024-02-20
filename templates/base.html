@@ -42,9 +42,6 @@
                             <li><a class="dropdown-item text-white" href="{% url 'core:about' %}">About Us</a></li>
                         </ul>
                     </li>
-                    {#                        <li class="nav-item">#}
-                    {#                            <a class="nav-link text-white" href="{% url 'user:users_cart' %}">Cart</a>#}
-                    {#                        </li>#}
                     {% if not user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{% url 'user:login' %}">Login</a>
