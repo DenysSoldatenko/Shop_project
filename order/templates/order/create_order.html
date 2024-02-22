@@ -63,6 +63,7 @@
                                 <label for="id_delivery_address" class="form-label">Delivery Address*:</label>
                                 <textarea class="form-control" id="id_delivery_address"
                                           value="
+
                                                   {% if form.delivery_address.value %}{{ form.delivery_address.value }}{% endif %}"
                                           name="delivery_address" rows="2"></textarea>
                                 {% if form.delivery_address.errors %}
@@ -81,6 +82,9 @@
                                            id="id_payment_on_get" value="1">
                                     <label class="form-check-label" for="id_payment_on_get">Cash/Card on
                                         Delivery</label>
+                                    {% if form.payment_on_get.errors %}
+                                        <div class="alert alert-danger alert-dismissible fade show">{{ form.payment_on_get.errors }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
