@@ -45,9 +45,9 @@ class OrderItem(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Sale Date")
 
     class Meta:
-        db_table = "order_item"
-        verbose_name = "Sold Product"
-        verbose_name_plural = "Sold Products"
+        db_table = "order_items"
+        verbose_name = "Order item"
+        verbose_name_plural = "Order items"
         ordering = ("id",)
 
     objects = OrderItemQueryset.as_manager()
