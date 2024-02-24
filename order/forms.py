@@ -1,4 +1,7 @@
+import re
+
 from django import forms
+from django.core.exceptions import ValidationError
 
 
 class CreateOrderForm(forms.Form):
@@ -18,3 +21,16 @@ class CreateOrderForm(forms.Form):
             ("1", True),
         ],
     )
+
+    def clean_phone_number(self):
+        data = self.cleaned_data['phone_number']
+
+        cleaned_data = re.sub(r'\D', '', data)
+
+        if len(cleaned_data) != 10:
+            raise ValidationError("The phone number should contain exactly 10 digits.")
+
+        if not cleaned_data.isdigit():
+            raise ValidationError("The phone number should contain only digits.")
+
+        return data
