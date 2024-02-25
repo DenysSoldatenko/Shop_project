@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.forms import ValidationError
 from django.shortcuts import redirect, render
@@ -7,6 +8,7 @@ from order.forms import CreateOrderForm
 from order.models import Order, OrderItem
 
 
+@login_required
 def create_order(request):
     if request.method == 'POST':
         form = CreateOrderForm(request.POST)
@@ -60,4 +62,4 @@ def create_order(request):
             'last_name': request.user.last_name,
         })
 
-    return render(request, 'order/create_order.html', {'form': form, 'title': 'Order Checkout'})
+    return render(request, 'order/create_order.html', {'form': form, 'title': 'Order Checkout', 'order': True})
