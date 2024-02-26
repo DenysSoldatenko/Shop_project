@@ -33,9 +33,8 @@ def create_order(request):
                     for cart_item in cart_items:
                         product = cart_item.product
                         if product.quantity < cart_item.quantity:
-                            raise ValidationError(
-                                f'Insufficient stock for product {product.name}. Available stock: {product.quantity}.'
-                            )
+                            messages.error(request, f'Insufficient stock for product {product.name}. Available stock: {product.quantity}.')
+                            return redirect('order:create_order')
 
                         OrderItem.objects.create(
                             order=order,

@@ -95,7 +95,6 @@
                 <div class="col-md-12">
                     <div class="bg-white p-4 mb-4 mx-2 rounded custom-shadow">
                         <h3 class="text-center mb-4">My Orders</h3>
-                        <!-- Orders Layout -->
                         <div class="container">
                             <div class="accordion" id="accordionExample">
                                 {% for order in orders %}
@@ -126,11 +125,11 @@
                                                     {% for item in order.orderitem_set.all %}
                                                         <tr>
                                                             <td><a class="text-white"
-                                                                   href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a>
+                                                                   href="{% url 'inventory:product_detail' item.product.slug %}">{{ item.product.name }}</a>
                                                             </td>
                                                             <td>{{ item.quantity }}</td>
                                                             <td>{{ item.price }}</td>
-                                                            <td>{{ item.products_price }}</td>
+                                                            <td>{{ item.get_product_price }}</td>
                                                         </tr>
                                                     {% endfor %}
                                                     </tbody>
@@ -141,7 +140,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <!-- End of Orders Layout -->
                     </div>
                 </div>
                 {% comment %} {% endcache %} {% endcomment %}
