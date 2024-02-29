@@ -29,6 +29,7 @@ class AboutView(TemplateView):
         """
         return context
 
+
 class DeliveryAndPaymentView(TemplateView):
     template_name = 'core/info_page.html'
 
@@ -52,5 +53,36 @@ class DeliveryAndPaymentView(TemplateView):
             We aim to make your shopping experience effortless, so you can focus on what matters most: creating a home that truly reflects your style and personality.
 
             Thank you for choosing Luxe Living, where quality meets comfort.
+        """
+        return context
+
+
+class ContactInformationView(TemplateView):
+    template_name = 'core/info_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Contact Us - We’re Here to Help!'
+        context['content'] = "Contact Information"
+        context['text_on_page'] = """
+            We're so glad you reached out! At Luxe Living, we're always ready to assist you and answer any questions you have. Whether it's about our products, services, or anything else, our team is excited to help!
+
+            Customer Support:
+            - 📧 Email: support@luxeliving.com
+            - 📞 Phone: +1 800 123 4567
+            - 🕒 Hours: Monday to Friday, 9:00 AM - 5:00 PM (We can't wait to hear from you!)
+
+            Visit Us:
+            Come visit us in person and experience Luxe Living firsthand! We're located at:
+            Luxe Living Store
+            1234 Luxury St, Suite 100
+            City, State, ZIP
+
+            Stay Connected:
+            - 📱 Facebook: @LuxeLivingFurniture
+            - 📸 Instagram: @LuxeLiving
+            We love connecting with our community, so follow us and stay up to date on all things Luxe Living!
+
+            We're here for you — let's make your home dreams come true! 😍
         """
         return context
