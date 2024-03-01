@@ -1,11 +1,11 @@
 from django.urls import path
 
-from inventory import views
+from inventory.views import ProductView, CatalogView
 
 app_name = 'inventory'
 
 urlpatterns = [
-    path('search/', views.product_list, name='search'),
-    path('<slug:category_slug>/', views.product_list, name='product_list'),
-    path('product/<slug:product_slug>/', views.product_detail, name='product_detail'),
+    path('search/', CatalogView.as_view(), name='search'),
+    path('<slug:category_slug>/', CatalogView.as_view(), name='product_list'),
+    path('product/<slug:product_slug>/', ProductView.as_view(), name='product_detail'),
 ]
