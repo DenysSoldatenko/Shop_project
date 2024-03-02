@@ -4,6 +4,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.generic import TemplateView
 
 from cart.models import Cart
 from order.models import Order, OrderItem
@@ -92,15 +93,13 @@ def profile(request):
     return render(request, 'user/profile.html', context)
 
 
-def cart(request):
-    form = ProfileForm(instance=request.user)
+class UserCartView(TemplateView):
+    template_name = 'user/cart.html'
 
-    context = {
-        'title': 'Cart',
-        'form': form
-    }
-
-    return render(request, 'user/cart.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Cart'
+        return context
 
 
 @login_required
