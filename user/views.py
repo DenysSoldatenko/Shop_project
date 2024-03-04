@@ -5,7 +5,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 
 from cart.models import Cart
 from order.models import Order, OrderItem
@@ -45,27 +45,29 @@ class UserLoginView(LoginView):
         return context
 
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(data=request.POST)
-        if form.is_valid():
+class UserRegistrationView(CreateView):
+    template_name = 'user/register.html'
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy('user:profile')
+
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.instance
+
+        if user:
             form.save()
-            session_key = request.session.session_key
-            user = form.instance
-            auth.login(request, user)
-            if session_key:
-                Cart.objects.filter(session_key=session_key).update(user=user)
-            messages.success(request, 'Registration successful! You are now logged in')
-            return HttpResponseRedirect(reverse('core:index'))
-    else:
-        form = UserRegistrationForm()
+            auth.login(self.request, user)
 
-    context = {
-        'title': 'Register',
-        'form': form
-    }
+        if session_key:
+            Cart.objects.filter(session_key=session_key).update(user=user)
 
-    return render(request, 'user/register.html', context)
+        messages.success(self.request, f"{user.username}, You have successfully registered and logged in")
+        return HttpResponseRedirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Register'
+        return context
 
 
 @login_required
@@ -80,7 +82,6 @@ def profile(request):
             messages.error(request, 'Please correct the errors below')
     else:
         form = ProfileForm(instance=request.user)
-
 
     orders = Order.objects.filter(user=request.user).prefetch_related(
         Prefetch(
