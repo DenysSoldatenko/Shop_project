@@ -1,11 +1,12 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, UpdateView
 
 from cart.models import Cart
 from order.models import Order, OrderItem
@@ -70,33 +71,32 @@ class UserRegistrationView(CreateView):
         return context
 
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(data=request.POST, instance=request.user, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your profile has been updated successfully')
-            return HttpResponseRedirect(reverse('user:profile'))
-        else:
-            messages.error(request, 'Please correct the errors below')
-    else:
-        form = ProfileForm(instance=request.user)
+class UserProfileView(LoginRequiredMixin, UpdateView):
+    template_name = 'user/profile.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('user:profile')
 
-    orders = Order.objects.filter(user=request.user).prefetch_related(
-        Prefetch(
-            "orderitem_set",
-            queryset=OrderItem.objects.select_related("product"),
-        )
-    ).order_by("-id")
+    def get_object(self, queryset=None):
+        return self.request.user
 
-    context = {
-        'title': 'Profile',
-        'form': form,
-        'orders': orders,
-    }
+    def form_valid(self, form):
+        messages.success(self.request, "Profile successfully updated")
+        return super().form_valid(form)
 
-    return render(request, 'user/profile.html', context)
+    def form_invalid(self, form):
+        messages.error(self.request, "An error occurred")
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Profile'
+        context['orders'] = Order.objects.filter(user=self.request.user).prefetch_related(
+            Prefetch(
+                "orderitem_set",
+                queryset=OrderItem.objects.select_related("product"),
+            )
+        ).order_by("-id")
+        return context
 
 
 class UserCartView(TemplateView):
