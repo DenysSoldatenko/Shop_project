@@ -1,10 +1,8 @@
 from django.contrib import auth, messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView
 
@@ -36,7 +34,7 @@ class UserLoginView(LoginView):
                     forgot_carts.delete()
                 Cart.objects.filter(session_key=session_key).update(user=user)
 
-                messages.success(self.request, f"{user.username}, You have logged in successfully")
+                messages.success(self.request, f"{user.username}, You have logged in successfully!")
 
                 return HttpResponseRedirect(self.get_success_url())
 
@@ -62,7 +60,7 @@ class UserRegistrationView(CreateView):
         if session_key:
             Cart.objects.filter(session_key=session_key).update(user=user)
 
-        messages.success(self.request, f"{user.username}, You have successfully registered and logged in")
+        messages.success(self.request, f"{user.username}, You have successfully registered and logged in!")
         return HttpResponseRedirect(self.success_url)
 
     def get_context_data(self, **kwargs):
@@ -80,11 +78,11 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def form_valid(self, form):
-        messages.success(self.request, "Profile successfully updated")
+        messages.success(self.request, "Profile successfully updated!")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "An error occurred")
+        messages.error(self.request, "An error occurred!")
         return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
@@ -108,8 +106,7 @@ class UserCartView(TemplateView):
         return context
 
 
-@login_required
-def logout(request):
-    auth.logout(request)
-    messages.success(request, 'You have been logged out successfully')
-    return redirect(reverse('core:index'))
+class UserLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, 'You have been logged out successfully!')
+        return super().dispatch(request, *args, **kwargs)
