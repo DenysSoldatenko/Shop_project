@@ -27,31 +27,31 @@ class CartAddView(View):
             )
 
         response_data = {
-            "message": f"The item {product.name} has been added to your cart.",
+            "message": f"The item {product.name} has been added to your cart!",
             'cart_items_html': render_cart(request)
         }
 
         return JsonResponse(response_data)
 
 
-def cart_change(request):
-    cart_id = request.POST.get("cart_id")
-    quantity = request.POST.get("quantity")
-    cart = Cart.objects.get(id=cart_id)
-    changed_product = cart.product
-    cart.quantity = quantity
-    cart.save()
+class CartChangeView(View):
+    def post(self, request):
+        cart_id = request.POST.get("cart_id")
+        cart = get_cart(request, cart_id=cart_id)
+        changed_product = cart.product
 
-    response_message = f"The quantity of {changed_product.name} has been updated to {quantity}."
+        cart.quantity = request.POST.get("quantity")
+        cart.save()
 
-    cart_items_html = render_to_string("cart/cart_details.html", {"cart": get_user_cart_detail(request)},
-                                       request=request)
-    response_data = {
-        "message": response_message,
-        "cart_items_html": cart_items_html,
-        "quantity": quantity,
-    }
-    return JsonResponse(response_data)
+        quantity = cart.quantity
+
+        response_data = {
+            "message": f"The quantity of {changed_product.name} has been updated to {quantity}!",
+            "quantity": quantity,
+            'cart_items_html': render_cart(request)
+        }
+
+        return JsonResponse(response_data)
 
 
 def cart_remove(request):
