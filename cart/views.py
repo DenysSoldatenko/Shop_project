@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.views.generic import View
-
 from cart.mixins import get_cart, render_cart
 from cart.models import Cart
 from cart.utils import get_user_cart_detail
@@ -10,9 +9,7 @@ from inventory.models import Product
 
 class CartAddView(View):
     def post(self, request):
-        product_id = request.POST.get("product_id")
-        product = Product.objects.get(id=product_id)
-
+        product = Product.objects.get(id=request.POST.get("product_id"))
         cart = get_cart(request, product=product)
 
         if cart:
@@ -26,49 +23,37 @@ class CartAddView(View):
                 quantity=1
             )
 
-        response_data = {
-            "message": f"The item {product.name} has been added to your cart!",
-            'cart_items_html': render_cart(request)
-        }
-
-        return JsonResponse(response_data)
+        return JsonResponse({
+            "message": f"{product.name} has been added to your cart!",
+            "cart_items_html": render_cart(request)
+        })
 
 
 class CartChangeView(View):
     def post(self, request):
-        cart_id = request.POST.get("cart_id")
-        cart = get_cart(request, cart_id=cart_id)
-        changed_product = cart.product
-
+        cart = get_cart(request, cart_id=request.POST.get("cart_id"))
         cart.quantity = request.POST.get("quantity")
         cart.save()
 
-        quantity = cart.quantity
-
-        response_data = {
-            "message": f"The quantity of {changed_product.name} has been updated to {quantity}!",
-            "quantity": quantity,
-            'cart_items_html': render_cart(request)
-        }
-
-        return JsonResponse(response_data)
+        return JsonResponse({
+            "message": f"The quantity of {cart.product.name} has been updated to {cart.quantity}!",
+            "quantity": cart.quantity,
+            "cart_items_html": render_cart(request)
+        })
 
 
 class CartRemoveView(View):
     def post(self, request):
-        cart_id = request.POST.get("cart_id")
-        cart = get_cart(request, cart_id=cart_id)
-        removed_product = cart.product
-        quantity = cart.quantity
+        cart = get_cart(request, cart_id=request.POST.get("cart_id"))
+        product, quantity = cart.product, cart.quantity
         cart.delete()
 
-        message = f"The item {removed_product.name} has been removed from your cart."
-
-        user_cart = get_user_cart_detail(request)
-        cart_items_html = render_to_string("cart/cart_details.html", {"cart": user_cart}, request=request)
-        response_data = {
-            "message": message,
-            "cart_items_html": cart_items_html,
+        return JsonResponse({
+            "message": f"{product.name} has been removed from your cart.",
+            "cart_items_html": render_to_string(
+                "cart/cart_details.html",
+                {"cart": get_user_cart_detail(request)},
+                request=request
+            ),
             "quantity_deleted": quantity,
-        }
-        return JsonResponse(response_data)
+        })
