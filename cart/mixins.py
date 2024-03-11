@@ -22,7 +22,7 @@ def get_cart(request, product=None, cart_id=None):
 
 def render_cart(request):
     user_cart = get_user_cart_detail(request)
-    context = {"carts": user_cart}
+    context = {"cart": user_cart}
 
     # if referer page is create_order add key orders: True to context
     referer = request.META.get('HTTP_REFERER')
@@ -31,6 +31,6 @@ def render_cart(request):
 
     return render_to_string(
         "cart/cart_details.html",
-        {"cart": get_user_cart_detail(request)},
+        context,
         request=request
     )

@@ -1,9 +1,8 @@
 from django.http import JsonResponse
-from django.template.loader import render_to_string
 from django.views.generic import View
+
 from cart.mixins import get_cart, render_cart
 from cart.models import Cart
-from cart.utils import get_user_cart_detail
 from inventory.models import Product
 
 
@@ -50,10 +49,6 @@ class CartRemoveView(View):
 
         return JsonResponse({
             "message": f"{product.name} has been removed from your cart.",
-            "cart_items_html": render_to_string(
-                "cart/cart_details.html",
-                {"cart": get_user_cart_detail(request)},
-                request=request
-            ),
+            "cart_items_html": render_cart(request),
             "quantity_deleted": quantity,
         })
