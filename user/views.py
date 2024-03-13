@@ -1,14 +1,13 @@
-from django.contrib import auth, messages
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Prefetch
-from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView
 
-from cart.models import Cart
 from order.models import Order, OrderItem
 from user.forms import UserLoginForm, UserRegistrationForm, ProfileForm
+from user.services import UserRegistrationService, UserLoginService
 
 
 class UserLoginView(LoginView):
@@ -22,21 +21,8 @@ class UserLoginView(LoginView):
         return reverse_lazy('core:index')
 
     def form_valid(self, form):
-        session_key = self.request.session.session_key
-
-        user = form.get_user()
-
-        if user:
-            auth.login(self.request, user)
-            if session_key:
-                forgot_carts = Cart.objects.filter(user=user)
-                if forgot_carts.exists():
-                    forgot_carts.delete()
-                Cart.objects.filter(session_key=session_key).update(user=user)
-
-                messages.success(self.request, f"{user.username}, You have logged in successfully!")
-
-                return HttpResponseRedirect(self.get_success_url())
+        login_service = UserLoginService(self.request, form)
+        return login_service.login()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -50,18 +36,8 @@ class UserRegistrationView(CreateView):
     success_url = reverse_lazy('user:profile')
 
     def form_valid(self, form):
-        session_key = self.request.session.session_key
-        user = form.instance
-
-        if user:
-            form.save()
-            auth.login(self.request, user)
-
-        if session_key:
-            Cart.objects.filter(session_key=session_key).update(user=user)
-
-        messages.success(self.request, f"{user.username}, You have successfully registered and logged in!")
-        return HttpResponseRedirect(self.success_url)
+        registration_service = UserRegistrationService(self.request, form)
+        return registration_service.register()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
