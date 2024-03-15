@@ -4,7 +4,7 @@ from inventory.models import Product
 from user.models import User
 
 
-class CartQueryset(models.QuerySet):
+class CartQuerySet(models.QuerySet):
     def total_price(self):
         return sum(cart.get_product_price() for cart in self)
 
@@ -27,7 +27,7 @@ class Cart(models.Model):
         verbose_name_plural = "Carts"
         ordering = ("id",)
 
-    objects = CartQueryset().as_manager()
+    objects = CartQuerySet().as_manager()
 
     def get_product_price(self):
         return round(self.product.get_sale_price() * self.quantity, 2)

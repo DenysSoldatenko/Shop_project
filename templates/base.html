@@ -98,14 +98,14 @@
                          height="16">
                 </button>
                 <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
-                    {#                        {% cache 60 catalog_categories %}#}
-                    {% get_all_categories as categories %}
-                    {% for category in categories %}
-                        <li><a class="dropdown-item text-white"
-                               href="{% url 'catalog:product_list' category_slug=category.slug %}">{{ category.name }}</a>
-                        </li>
-                    {% endfor %}
-                    {#                        {% endcache %}#}
+                    {% cache 60 catalog_categories %}
+                        {% get_all_categories as categories %}
+                        {% for category in categories %}
+                            <li><a class="dropdown-item text-white"
+                                   href="{% url 'catalog:product_list' category_slug=category.slug %}">{{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endcache %}
                 </ul>
             </div>
             {% block modal_cart %}{% endblock %}
