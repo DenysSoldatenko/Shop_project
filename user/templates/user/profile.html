@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load cache %}
 {% load cart_tags %}
 
 {% block content %}
@@ -91,7 +90,6 @@
                     </div>
                 </div>
                 <!-- Orders Section -->
-                {% cache 60 user_orders user.id %}
                 <div class="col-md-12">
                     <div class="bg-white p-4 mb-4 mx-2 rounded custom-shadow">
                         <h3 class="text-center mb-4">My Orders</h3>
@@ -142,7 +140,6 @@
                         </div>
                     </div>
                 </div>
-                {% endcache %}
             </div>
         </div>
     </div>
