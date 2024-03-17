@@ -12,7 +12,7 @@ class CartAddView(View):
         cart_service.add_product_to_cart()
 
         return JsonResponse({
-            "message": f"{product.name} has been added to your cart!",
+            "message": f"{product.name} has been added to your cart.",
             "cart_items_html": render_cart(request)
         })
 
@@ -25,7 +25,7 @@ class CartChangeView(View):
         cart = cart_service.update_cart_item()
 
         return JsonResponse({
-            "message": f"The quantity of {cart.product.name} has been updated to {cart.quantity}!",
+            "message": f"The quantity of {cart.product.name} has been updated to {cart.quantity}.",
             "quantity": cart.quantity,
             "cart_items_html": render_cart(request)
         })
