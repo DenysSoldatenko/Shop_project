@@ -27,3 +27,23 @@ A feature-rich **Django-based e-commerce platform** designed to provide seamless
 - **Service Layer Architecture**: Decoupled business logic for authentication, cart, and order operations.
 - **Caching**: Boosts performance with user-specific cache management.
 - **Responsive Design**: Ensures optimal usability across devices.
+
+## Screenshots
+
+Here are some screenshots that demonstrate key features of the platform:
+
+### Homepage
+![Homepage](photos/home_page.png)
+*The homepage features the main product catalog, promotions, and quick links for customers to explore.*
+
+### Product List
+![Product List](photos/product_list.png)
+*The product listing page displays a variety of products with filter options for sorting and searching.*
+
+### User Profile
+![User Profile](photos/profile_page.png)
+*Users can view and update their personal information, as well as access their order history.*
+
+### Order Example
+![Order Example](photos/order_example.png)
+*The order example page shows a completed order with payment and delivery details.*

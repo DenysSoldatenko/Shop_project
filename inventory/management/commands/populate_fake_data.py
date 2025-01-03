@@ -4,16 +4,21 @@ from django.core.files.base import ContentFile
 from django.core.management import BaseCommand
 from django.db import IntegrityError
 from faker import Faker
+
+from cart.models import Cart
 from inventory.models import Category, Product
+from user.models import User
+from order.models import Order, OrderItem
 from PIL import Image
 from io import BytesIO
 
 class Command(BaseCommand):
-    help = "Generate fake data for Category and Product models"
+    help = "Generate fake data for Category, Product, Cart, and Order models"
 
     def handle(self, *args, **kwargs):
         fake = Faker()
 
+        # Step 1: Create Categories
         categories = []
         for _ in range(5):
             category_name = fake.word().capitalize()
@@ -32,6 +37,8 @@ class Command(BaseCommand):
                     f'Category name or slug "{category_name}" already exists. Skipping this category.'))
                 continue
 
+        # Step 2: Create Products
+        products = []
         for _ in range(35):
             product_name = fake.word().capitalize()
             product_slug = fake.slug()
@@ -74,6 +81,7 @@ class Command(BaseCommand):
                         quantity=product_quantity,
                         category=product_category
                     )
+                    products.append(product)
                     self.stdout.write(self.style.SUCCESS(f'Successfully created product: {product.name}'))
 
                 else:
@@ -90,3 +98,69 @@ class Command(BaseCommand):
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
                 continue
+
+        # Step 3: Create Users
+        users = []
+        for _ in range(10):
+            username = fake.user_name()
+            password = 'password'
+            email = fake.email()
+            phone_number = fake.phone_number()[:10]
+
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email,
+                phone_number=phone_number
+            )
+            users.append(user)
+            self.stdout.write(self.style.SUCCESS(f'Successfully created user: {user.username}'))
+
+        # Step 4: Generate Carts for Users
+        for user in users:
+            for _ in range(fake.random_int(1, 5)):  # Each user can have between 1 to 5 cart items
+                product = fake.random_element(products)
+                quantity = fake.random_int(1, 3)
+                Cart.objects.create(
+                    user=user,
+                    product=product,
+                    quantity=quantity
+                )
+                self.stdout.write(self.style.SUCCESS(f'User {user.username} added product {product.name} to cart.'))
+
+        # Step 5: Generate Orders from Carts
+        for user in users:
+            cart_items = Cart.objects.filter(user=user)
+            if not cart_items:
+                continue
+
+            # Create an order for the user
+            phone_number = fake.phone_number()[:10]
+            requires_delivery = fake.boolean()
+            delivery_address = fake.address() if requires_delivery else None
+            payment_on_get = fake.boolean()
+
+            order = Order.objects.create(
+                user=user,
+                phone_number=phone_number,
+                requires_delivery=requires_delivery,
+                delivery_address=delivery_address,
+                payment_on_get=payment_on_get,
+                is_paid=fake.boolean(),
+                status="Processing"
+            )
+
+            # Add order items based on cart items
+            for cart_item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    name=cart_item.product.name,
+                    price=cart_item.product.price,
+                    quantity=cart_item.quantity
+                )
+
+            self.stdout.write(self.style.SUCCESS(f'Order for user {user.username} created with {cart_items.count()} items.'))
+
+            # Optional: Clear cart after order is created
+            cart_items.delete()
